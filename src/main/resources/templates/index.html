@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Dashboard &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      Dashboard
+      <small>Bem-vindo ao sistema de gestão do hotel</small>
+    </div>
+    <span style="color:var(--text-muted);font-size:.85rem;">
+      <i class="bi bi-clock"></i>
+      <span th:text="${#temporals.format(#temporals.createNow(),'dd/MM/yyyy')}"></span>
+    </span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value" th:text="${totalClientes}">0</div>
+      <div class="stat-label">Clientes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🛏️</div>
+      <div class="stat-value" th:text="${totalQuartos}">0</div>
+      <div class="stat-label">Quartos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" th:text="${quartosDisponiveis}">0</div>
+      <div class="stat-label">Disponíveis</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-value" th:text="${totalReservas}">0</div>
+      <div class="stat-label">Reservas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏨</div>
+      <div class="stat-value" th:text="${hospedagensAtivas}">0</div>
+      <div class="stat-label">Hospedagens Ativas</div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="card mb-4">
+    <div class="card-header-custom">
+      <i class="bi bi-lightning-charge"></i> Ações Rápidas
+    </div>
+    <div class="card-body-pad">
+      <div class="d-flex flex-wrap gap-3">
+        <a th:href="@{/clientes/novo}"        class="btn-accent-hotel">
+          <i class="bi bi-person-plus"></i> Novo Cliente
+        </a>
+        <a th:href="@{/reservas/novo}"         class="btn-primary-hotel">
+          <i class="bi bi-calendar-plus"></i> Nova Reserva
+        </a>
+        <a th:href="@{/hospedagens/checkin-direto}" class="btn-outline-hotel">
+          <i class="bi bi-box-arrow-in-right"></i> Check-in Direto
+        </a>
+        <a th:href="@{/quartos/disponiveis}"   class="btn-outline-hotel">
+          <i class="bi bi-search"></i> Ver Disponibilidade
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hospedagens ativas resumo -->
+  <div class="card">
+    <div class="card-header-custom">
+      <i class="bi bi-house-heart"></i> Hospedagens Ativas Agora
+    </div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Quarto</th>
+            <th>Tipo</th>
+            <th>Check-in</th>
+            <th>Dias</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="h : ${hospedagens}" th:if="${h.ativa}">
+            <td th:text="${h.cliente.nome}">—</td>
+            <td><span class="badge-hotel badge-ativo" th:text="'Quarto ' + ${h.quarto.numero}"></span></td>
+            <td th:text="${h.quarto.tipoQuarto.nome}">—</td>
+            <td th:text="${#temporals.format(h.dataCheckin,'dd/MM/yyyy')}">—</td>
+            <td th:text="${h.quantidadeDias}">—</td>
+            <td>
+              <a th:href="@{/hospedagens/{id}(id=${h.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a th:href="@{/hospedagens/checkout/{id}(id=${h.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Realizar checkout?')">
+                <i class="bi bi-box-arrow-right"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(hospedagens)}">
+            <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhuma hospedagem ativa no momento.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

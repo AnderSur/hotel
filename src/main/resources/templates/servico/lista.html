@@ -1,0 +1,54 @@
+<!-- ==================== servico/lista.html ==================== -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Serviços &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Serviços <small>Catálogo de serviços do hotel</small></div>
+    <a th:href="@{/servicos/novo}" class="btn-accent-hotel">
+      <i class="bi bi-plus-circle"></i> Novo Serviço
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>ID Interno</th><th>Nome</th><th>Descrição</th><th>Valor</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="s : ${servicos}">
+            <td><code th:text="${s.identificadorInterno}"></code></td>
+            <td><strong th:text="${s.nome}"></strong></td>
+            <td th:text="${s.descricao}"></td>
+            <td>
+              <strong style="color:var(--primary);"
+                th:text="'R$ ' + ${#numbers.formatDecimal(s.valor,1,'COMMA',2,'POINT')}"></strong>
+            </td>
+            <td>
+              <a th:href="@{/servicos/editar/{id}(id=${s.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <a th:href="@{/servicos/deletar/{id}(id=${s.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Confirma exclusão?')">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(servicos)}">
+            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhum serviço cadastrado.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

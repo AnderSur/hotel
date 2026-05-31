@@ -1,0 +1,69 @@
+<!-- ==================== hospedagem/lista.html ==================== -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Hospedagens &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Hospedagens Ativas <small>Hóspedes atualmente no hotel</small></div>
+    <a th:href="@{/hospedagens/checkin-direto}" class="btn-accent-hotel">
+      <i class="bi bi-box-arrow-in-right"></i> Check-in Direto
+    </a>
+  </div>
+
+  <div th:if="${sucesso}" class="alert-hotel alert-success">
+    <i class="bi bi-check-circle"></i> <span th:text="${sucesso}"></span>
+  </div>
+  <div th:if="${erro}" class="alert-hotel alert-danger">
+    <i class="bi bi-exclamation-circle"></i> <span th:text="${erro}"></span>
+  </div>
+
+  <div class="card">
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>#</th><th>Cliente</th><th>Quarto</th><th>Tipo</th><th>Check-in</th><th>Dias</th><th>Status</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="h : ${hospedagens}">
+            <td th:text="${h.id}"></td>
+            <td><strong th:text="${h.cliente.nome}"></strong></td>
+            <td th:text="'Quarto ' + ${h.quarto.numero}"></td>
+            <td th:text="${h.quarto.tipoQuarto.nome}"></td>
+            <td th:text="${#temporals.format(h.dataCheckin,'dd/MM/yyyy')}"></td>
+            <td th:text="${h.quantidadeDias}"></td>
+            <td>
+              <span th:if="${h.ativa}"  class="badge-hotel badge-ativo">Ativa</span>
+              <span th:if="${!h.ativa}" class="badge-hotel badge-encerrado">Encerrada</span>
+            </td>
+            <td>
+              <a th:href="@{/hospedagens/{id}(id=${h.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a th:href="@{/servicos-hospedagem/hospedagem/{id}(id=${h.id})}"
+                 class="btn-outline-hotel btn-sm-hotel" title="Serviços">
+                <i class="bi bi-bell"></i>
+              </a>
+              <a th:if="${h.ativa}"
+                 th:href="@{/hospedagens/checkout/{id}(id=${h.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Confirmar checkout?')">
+                <i class="bi bi-box-arrow-right"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(hospedagens)}">
+            <td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhuma hospedagem ativa.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

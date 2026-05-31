@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Disponibilidade &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Disponibilidade de Quartos <small>Consulta via UDF com cursor</small></div>
+    <a th:href="@{/quartos}" class="btn-outline-hotel"><i class="bi bi-arrow-left"></i> Voltar</a>
+  </div>
+
+  <!-- Filtro -->
+  <div class="card mb-4">
+    <div class="card-header-custom"><i class="bi bi-search"></i> Pesquisar Disponibilidade</div>
+    <div class="card-body-pad">
+      <form th:action="@{/quartos/disponiveis}" method="get">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label">Data de Check-in *</label>
+            <input type="date" name="dataCheckin" class="form-control-hotel"
+                   th:value="${dataCheckin}" required/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Quantidade de Dias *</label>
+            <input type="number" name="quantidadeDias" min="1" class="form-control-hotel"
+                   th:value="${quantidadeDias}" placeholder="Ex: 3" required/>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn-accent-hotel" style="width:100%;">
+              <i class="bi bi-search"></i> Verificar Disponibilidade
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resultado UDF -->
+  <div class="card" th:if="${quartos != null}">
+    <div class="card-header-custom">
+      <i class="bi bi-calendar-check"></i>
+      Quartos disponíveis para
+      <span th:text="${#temporals.format(dataCheckin,'dd/MM/yyyy')}"></span>
+      por <span th:text="${quantidadeDias}"></span> dia(s)
+    </div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Quarto</th><th>Andar</th><th>Tipo</th><th>Descrição</th><th>Preço/Dia</th><th>Total Período</th><th>Ação</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="row : ${quartos}">
+            <!-- row é Object[] vindo da query nativa -->
+            <td><strong th:text="${row[1]}"></strong></td>
+            <td th:text="${row[2]} + 'º'"></td>
+            <td th:text="${row[4]}"></td>
+            <td th:text="${row[3]}"></td>
+            <td th:text="'R$ ' + ${#numbers.formatDecimal(row[5],1,'COMMA',2,'POINT')}"></td>
+            <td>
+              <strong style="color:var(--primary);"
+                th:text="'R$ ' + ${#numbers.formatDecimal(row[5] * quantidadeDias,1,'COMMA',2,'POINT')}"></strong>
+            </td>
+            <td>
+              <a th:href="@{/reservas/novo(quartoId=${row[0]},dataCheckin=${dataCheckin},quantidadeDias=${quantidadeDias})}"
+                 class="btn-accent-hotel btn-sm-hotel">
+                <i class="bi bi-calendar-plus"></i> Reservar
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(quartos)}">
+            <td colspan="7" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              <i class="bi bi-emoji-frown" style="font-size:1.5rem;"></i><br/>
+              Nenhum quarto disponível para este período.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Relatório de Reservas &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Relatório de Reservas por Dia <small>Clientes, quartos, tipo e valor</small></div>
+    <a th:href="@{/reservas}" class="btn-outline-hotel"><i class="bi bi-arrow-left"></i> Voltar</a>
+  </div>
+
+  <!-- Filtro de data -->
+  <div class="card mb-4">
+    <div class="card-header-custom"><i class="bi bi-funnel"></i> Filtrar por Data</div>
+    <div class="card-body-pad">
+      <form th:action="@{/reservas/relatorio-dia}" method="get">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label">Data de Check-in</label>
+            <input type="date" name="data" class="form-control-hotel" th:value="${data}" required/>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn-accent-hotel" style="width:100%;">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+          </div>
+          <div class="col-md-4" th:if="${reservas != null}">
+            <a th:href="@{/relatorios/reservas-dia-pdf(data=${data})}"
+               class="btn-primary-hotel" style="width:100%;justify-content:center;">
+              <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <div class="card" th:if="${reservas != null}">
+    <div class="card-header-custom">
+      <i class="bi bi-table"></i>
+      Reservas para <span th:text="${#temporals.format(data,'dd/MM/yyyy')}"></span>
+      &mdash; <span th:text="${reservas.size()}"></span> registro(s)
+    </div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Cliente</th><th>CPF</th><th>Cidade</th><th>Quarto</th><th>Tipo</th><th>Dias</th><th>Preço/Dia</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="r : ${reservas}">
+            <td><strong th:text="${r.cliente.nome}"></strong></td>
+            <td th:text="${r.cliente.cpf}"></td>
+            <td th:text="${r.cliente.cidade}"></td>
+            <td th:text="'Quarto ' + ${r.quarto.numero} + ' (' + r.quarto.andar + 'º)'"></td>
+            <td th:text="${r.quarto.tipoQuarto.nome}"></td>
+            <td th:text="${r.quantidadeDias}"></td>
+            <td th:text="'R$ ' + ${#numbers.formatDecimal(r.quarto.tipoQuarto.precoPorDia,1,'COMMA',2,'POINT')}"></td>
+            <td><strong th:text="'R$ ' + ${#numbers.formatDecimal(r.calcularTotal(),1,'COMMA',2,'POINT')}"></strong></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(reservas)}">
+            <td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhuma reserva para esta data.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

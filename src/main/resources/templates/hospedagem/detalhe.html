@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Detalhe Hospedagem &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      Hospedagem #<span th:text="${hospedagem.id}"></span>
+      <small th:text="${hospedagem.cliente.nome}"></small>
+    </div>
+    <div class="d-flex gap-2">
+      <!-- Relatório PDF da fatura (requisito do trabalho) -->
+      <a th:href="@{/relatorios/fatura-pdf/{id}(id=${hospedagem.id})}" class="btn-primary-hotel">
+        <i class="bi bi-file-earmark-pdf"></i> Exportar Fatura PDF
+      </a>
+      <a th:if="${hospedagem.ativa}"
+         th:href="@{/hospedagens/checkout/{id}(id=${hospedagem.id})}"
+         class="btn-danger-hotel"
+         onclick="return confirm('Confirmar checkout?')">
+        <i class="bi bi-box-arrow-right"></i> Checkout
+      </a>
+      <a th:href="@{/hospedagens}" class="btn-outline-hotel">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+    </div>
+  </div>
+
+  <!-- Status banner -->
+  <div class="alert-hotel" th:classappend="${hospedagem.ativa} ? 'alert-info' : 'alert-success'">
+    <i th:class="${hospedagem.ativa} ? 'bi bi-house-heart' : 'bi bi-check-circle'"></i>
+    <span th:text="${hospedagem.ativa} ? 'Hospedagem em andamento' : 'Hospedagem encerrada'"></span>
+  </div>
+
+  <!-- Dados do cliente e quarto -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header-custom"><i class="bi bi-person"></i> Cliente</div>
+        <div class="card-body-pad">
+          <div class="detail-grid">
+            <div class="detail-item"><label>Nome</label><span th:text="${hospedagem.cliente.nome}"></span></div>
+            <div class="detail-item"><label>CPF</label><span th:text="${hospedagem.cliente.cpf}"></span></div>
+            <div class="detail-item"><label>Telefone</label><span th:text="${hospedagem.cliente.telefone}"></span></div>
+            <div class="detail-item"><label>Cidade</label><span th:text="${hospedagem.cliente.cidade}"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header-custom"><i class="bi bi-door-open"></i> Quarto & Período</div>
+        <div class="card-body-pad">
+          <div class="detail-grid">
+            <div class="detail-item"><label>Quarto</label><span th:text="'Nº ' + ${hospedagem.quarto.numero}"></span></div>
+            <div class="detail-item"><label>Andar</label><span th:text="${hospedagem.quarto.andar} + 'º'"></span></div>
+            <div class="detail-item"><label>Tipo</label><span th:text="${hospedagem.quarto.tipoQuarto.nome}"></span></div>
+            <div class="detail-item"><label>Preço/Dia</label>
+              <span th:text="'R$ ' + ${#numbers.formatDecimal(hospedagem.quarto.tipoQuarto.precoPorDia,1,'COMMA',2,'POINT')}"></span>
+            </div>
+            <div class="detail-item"><label>Check-in</label>
+              <span th:text="${#temporals.format(hospedagem.dataCheckin,'dd/MM/yyyy')}"></span>
+            </div>
+            <div class="detail-item"><label>Check-out</label>
+              <span th:text="${hospedagem.dataCheckout != null} ? ${#temporals.format(hospedagem.dataCheckout,'dd/MM/yyyy')} : 'Em andamento'"></span>
+            </div>
+            <div class="detail-item"><label>Dias Contratados</label>
+              <span th:text="${hospedagem.quantidadeDias}"></span>
+            </div>
+            <div class="detail-item"><label>Total Diárias</label>
+              <strong th:text="'R$ ' + ${#numbers.formatDecimal(hospedagem.calcularTotalDiarias(),1,'COMMA',2,'POINT')}"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Serviços consumidos -->
+  <div class="card mb-3">
+    <div class="card-header-custom" style="justify-content:space-between;">
+      <span><i class="bi bi-bell"></i> Serviços Consumidos</span>
+      <a th:if="${hospedagem.ativa}"
+         th:href="@{/servicos-hospedagem/hospedagem/{id}(id=${hospedagem.id})}"
+         style="color:var(--accent);font-size:.82rem;text-decoration:none;">
+        <i class="bi bi-plus-circle"></i> Solicitar Serviço
+      </a>
+    </div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Serviço</th><th>Data/Hora</th><th>Qtd</th><th>Valor Unit.</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="s : ${hospedagem.servicosHospedagem}">
+            <td th:text="${s.servico.nome}"></td>
+            <td th:text="${#temporals.format(s.dataSolicitacao,'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${s.quantidade}"></td>
+            <td th:text="'R$ ' + ${#numbers.formatDecimal(s.servico.valor,1,'COMMA',2,'POINT')}"></td>
+            <td><strong th:text="'R$ ' + ${#numbers.formatDecimal(s.calcularSubtotal(),1,'COMMA',2,'POINT')}"></strong></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(hospedagem.servicosHospedagem)}">
+            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1.5rem;">
+              Nenhum serviço solicitado.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Total geral -->
+  <div class="card">
+    <div class="card-body-pad" style="text-align:right;">
+      <div style="display:inline-block;text-align:left;min-width:280px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;color:var(--text-muted);">
+          <span>Total Diárias:</span>
+          <span th:text="'R$ ' + ${#numbers.formatDecimal(hospedagem.calcularTotalDiarias(),1,'COMMA',2,'POINT')}"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:.5rem;color:var(--text-muted);">
+          <span>Total Serviços:</span>
+          <span th:text="'R$ ' + ${#numbers.formatDecimal(hospedagem.calcularTotalServicos(),1,'COMMA',2,'POINT')}"></span>
+        </div>
+        <hr/>
+        <div style="display:flex;justify-content:space-between;font-size:1.3rem;font-weight:700;color:var(--primary);">
+          <span>TOTAL GERAL:</span>
+          <span th:text="'R$ ' + ${#numbers.formatDecimal(hospedagem.calcularTotal(),1,'COMMA',2,'POINT')}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

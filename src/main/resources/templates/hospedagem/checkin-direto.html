@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Check-in Direto &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Check-in Direto <small>Sem reserva — sujeito à disponibilidade</small></div>
+    <a th:href="@{/hospedagens}" class="btn-outline-hotel"><i class="bi bi-arrow-left"></i> Voltar</a>
+  </div>
+
+  <div class="alert-hotel alert-info">
+    <i class="bi bi-info-circle"></i>
+    O check-in direto ocupa o quarto imediatamente. Todos os campos são obrigatórios.
+  </div>
+
+  <div th:if="${erro}" class="alert-hotel alert-danger">
+    <i class="bi bi-exclamation-circle"></i> <span th:text="${erro}"></span>
+  </div>
+
+  <div class="card">
+    <div class="card-header-custom"><i class="bi bi-box-arrow-in-right"></i> Dados do Check-in</div>
+    <div class="card-body-pad">
+      <form th:action="@{/hospedagens/checkin-direto}" th:object="${hospedagem}" method="post" class="form-hotel">
+
+        <div class="form-group">
+          <label class="form-label">Cliente *</label>
+          <select th:field="*{cliente.id}" class="form-control-hotel"
+                  th:classappend="${#fields.hasErrors('cliente')} ? 'is-invalid'">
+            <option value="">— Selecione o cliente —</option>
+            <option th:each="c : ${clientes}" th:value="${c.id}"
+                    th:text="${c.nome + ' — CPF: ' + c.cpf}"></option>
+          </select>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quarto Disponível *</label>
+          <select th:field="*{quarto.id}" class="form-control-hotel"
+                  th:classappend="${#fields.hasErrors('quarto')} ? 'is-invalid'">
+            <option value="">— Selecione o quarto —</option>
+            <option th:each="q : ${quartos}" th:value="${q.id}"
+                    th:text="'Quarto ' + ${q.numero} + ' (' + q.andar + 'º andar) — ' + q.tipoQuarto.nome + ' — R$ ' + ${#numbers.formatDecimal(q.tipoQuarto.precoPorDia,1,'COMMA',2,'POINT')} + '/dia'"></option>
+          </select>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('quarto')}" th:errors="*{quarto}"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Quantidade de Dias *</label>
+          <input type="number" th:field="*{quantidadeDias}" class="form-control-hotel"
+                 th:classappend="${#fields.hasErrors('quantidadeDias')} ? 'is-invalid'"
+                 min="1" placeholder="Ex: 3"/>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('quantidadeDias')}" th:errors="*{quantidadeDias}"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-accent-hotel">
+            <i class="bi bi-box-arrow-in-right"></i> Realizar Check-in
+          </button>
+          <a th:href="@{/hospedagens}" class="btn-outline-hotel">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

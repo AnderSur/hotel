@@ -1,0 +1,65 @@
+<!-- ==================== cliente/lista.html ==================== -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Clientes &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Clientes <small>Cadastro de hóspedes</small></div>
+    <a th:href="@{/clientes/novo}" class="btn-accent-hotel">
+      <i class="bi bi-person-plus"></i> Novo Cliente
+    </a>
+  </div>
+
+  <div th:if="${param.sucesso}" class="alert-hotel alert-success">
+    <i class="bi bi-check-circle"></i> Operação realizada com sucesso!
+  </div>
+  <div th:if="${param.erro}" class="alert-hotel alert-danger">
+    <i class="bi bi-exclamation-circle"></i> Ocorreu um erro. Tente novamente.
+  </div>
+
+  <div class="card">
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr>
+            <th>#</th><th>Nome</th><th>CPF</th>
+            <th>Telefone</th><th>Cidade</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="c : ${clientes}">
+            <td th:text="${c.id}"></td>
+            <td><strong th:text="${c.nome}"></strong></td>
+            <td th:text="${c.cpf}"></td>
+            <td th:text="${c.telefone}"></td>
+            <td th:text="${c.cidade}"></td>
+            <td>
+              <a th:href="@{/clientes/{id}(id=${c.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a th:href="@{/clientes/editar/{id}(id=${c.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <a th:href="@{/clientes/deletar/{id}(id=${c.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Confirma exclusão?')">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(clientes)}">
+            <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              <i class="bi bi-inbox" style="font-size:1.5rem;"></i><br/>Nenhum cliente cadastrado.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

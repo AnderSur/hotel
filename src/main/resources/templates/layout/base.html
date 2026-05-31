@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(title, content)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:replace="${title}">Hotel</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">
+      &#9670; Hotel<span>Sys</span>
+    </a>
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-1">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/clientes}">
+            <i class="bi bi-people"></i> Clientes
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-door-open"></i> Quartos
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/quartos}">
+              <i class="bi bi-list-ul me-2"></i>Todos os Quartos</a></li>
+            <li><a class="dropdown-item" th:href="@{/quartos/disponiveis}">
+              <i class="bi bi-calendar-check me-2"></i>Disponibilidade</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" th:href="@{/tipos-quarto}">
+              <i class="bi bi-tags me-2"></i>Tipos de Quarto</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-calendar3"></i> Reservas
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/reservas}">
+              <i class="bi bi-list-ul me-2"></i>Todas as Reservas</a></li>
+            <li><a class="dropdown-item" th:href="@{/reservas/novo}">
+              <i class="bi bi-plus-circle me-2"></i>Nova Reserva</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" th:href="@{/reservas/relatorio-dia}">
+              <i class="bi bi-file-earmark-pdf me-2"></i>Relatório do Dia</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-house-heart"></i> Hospedagens
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/hospedagens}">
+              <i class="bi bi-list-ul me-2"></i>Hospedagens Ativas</a></li>
+            <li><a class="dropdown-item" th:href="@{/hospedagens/checkin-direto}">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Check-in Direto</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/servicos}">
+            <i class="bi bi-bell"></i> Serviços
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Page content ───────────────────────────────── -->
+<div class="page-wrapper">
+  <div th:replace="${content}">Conteúdo aqui</div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer>
+  &copy; 2025 HotelSys &mdash; FATEC ZL &middot; Prof. Leandro Colevati
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

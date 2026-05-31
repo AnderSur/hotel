@@ -1,0 +1,64 @@
+<!-- ==================== reserva/lista.html ==================== -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Reservas &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">Reservas <small>Todas as reservas cadastradas</small></div>
+    <div class="d-flex gap-2">
+      <a th:href="@{/reservas/relatorio-dia}" class="btn-outline-hotel">
+        <i class="bi bi-file-earmark-pdf"></i> Relatório
+      </a>
+      <a th:href="@{/reservas/novo}" class="btn-accent-hotel">
+        <i class="bi bi-calendar-plus"></i> Nova Reserva
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>#</th><th>Cliente</th><th>Quarto</th><th>Tipo</th><th>Check-in</th><th>Check-out</th><th>Dias</th><th>Total</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="r : ${reservas}">
+            <td th:text="${r.id}"></td>
+            <td th:text="${r.cliente.nome}"></td>
+            <td th:text="'Quarto ' + ${r.quarto.numero}"></td>
+            <td th:text="${r.quarto.tipoQuarto.nome}"></td>
+            <td th:text="${#temporals.format(r.dataCheckin,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(r.dataCheckout,'dd/MM/yyyy')}"></td>
+            <td th:text="${r.quantidadeDias}"></td>
+            <td th:text="'R$ ' + ${#numbers.formatDecimal(r.calcularTotal(),1,'COMMA',2,'POINT')}"></td>
+            <td>
+              <!-- Check-in a partir da reserva -->
+              <a th:href="@{/hospedagens/checkin-reserva/{id}(id=${r.id})}"
+                 class="btn-outline-hotel btn-sm-hotel"
+                 title="Realizar Check-in"
+                 onclick="return confirm('Confirmar check-in e remover reserva?')">
+                <i class="bi bi-box-arrow-in-right"></i>
+              </a>
+              <a th:href="@{/reservas/deletar/{id}(id=${r.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Confirma exclusão?')">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(reservas)}">
+            <td colspan="9" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhuma reserva cadastrada.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Quarto &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      <span th:text="${quarto.id == null} ? 'Novo Quarto' : 'Editar Quarto'"></span>
+    </div>
+    <a th:href="@{/quartos}" class="btn-outline-hotel"><i class="bi bi-arrow-left"></i> Voltar</a>
+  </div>
+
+  <div class="card">
+    <div class="card-header-custom"><i class="bi bi-door-open"></i> Dados do Quarto</div>
+    <div class="card-body-pad">
+      <form th:action="@{/quartos/salvar}" th:object="${quarto}" method="post" class="form-hotel">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Número *</label>
+              <input type="number" th:field="*{numero}" class="form-control-hotel"
+                     th:classappend="${#fields.hasErrors('numero')} ? 'is-invalid'" placeholder="101"/>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Andar *</label>
+              <input type="number" th:field="*{andar}" class="form-control-hotel"
+                     th:classappend="${#fields.hasErrors('andar')} ? 'is-invalid'" placeholder="1"/>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('andar')}" th:errors="*{andar}"></div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Tipo de Quarto *</label>
+              <select th:field="*{tipoQuarto.id}" class="form-control-hotel"
+                      th:classappend="${#fields.hasErrors('tipoQuarto')} ? 'is-invalid'">
+                <option value="">— Selecione —</option>
+                <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nome + ' — R$ ' + #numbers.formatDecimal(t.precoPorDia,1,'COMMA',2,'POINT')}"></option>
+              </select>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoQuarto')}" th:errors="*{tipoQuarto}"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descrição</label>
+          <textarea th:field="*{descricao}" class="form-control-hotel" rows="3"
+                    placeholder="Descreva o quarto, vista, comodidades..."></textarea>
+        </div>
+
+        <div class="form-group" th:if="${quarto.id != null}">
+          <label class="form-label">Disponível</label>
+          <select th:field="*{disponivel}" class="form-control-hotel">
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-accent-hotel"><i class="bi bi-check-lg"></i> Salvar</button>
+          <a th:href="@{/quartos}" class="btn-outline-hotel">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Detalhe Cliente &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title" th:text="${cliente.nome}">Cliente</div>
+    <div class="d-flex gap-2">
+      <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn-primary-hotel">
+        <i class="bi bi-pencil"></i> Editar
+      </a>
+      <a th:href="@{/clientes}" class="btn-outline-hotel">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header-custom"><i class="bi bi-person"></i> Dados Pessoais</div>
+    <div class="card-body-pad">
+      <div class="detail-grid">
+        <div class="detail-item"><label>CPF</label><span th:text="${cliente.cpf}">—</span></div>
+        <div class="detail-item"><label>Nome</label><span th:text="${cliente.nome}">—</span></div>
+        <div class="detail-item"><label>Telefone</label><span th:text="${cliente.telefone}">—</span></div>
+        <div class="detail-item"><label>Cidade</label><span th:text="${cliente.cidade}">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservas do cliente -->
+  <div class="card mb-4">
+    <div class="card-header-custom"><i class="bi bi-calendar3"></i> Reservas</div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Quarto</th><th>Check-in</th><th>Check-out</th><th>Dias</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="r : ${cliente.reservas}">
+            <td th:text="'Quarto ' + ${r.quarto.numero}"></td>
+            <td th:text="${#temporals.format(r.dataCheckin,'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(r.dataCheckout,'dd/MM/yyyy')}"></td>
+            <td th:text="${r.quantidadeDias}"></td>
+            <td th:text="${#numbers.formatDecimal(r.calcularTotal(),1,'COMMA',2,'POINT')}"></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(cliente.reservas)}">
+            <td colspan="5" style="text-align:center;color:var(--text-muted);padding:1.5rem;">
+              Sem reservas cadastradas.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Hospedagens do cliente -->
+  <div class="card">
+    <div class="card-header-custom"><i class="bi bi-house-heart"></i> Histórico de Hospedagens</div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Quarto</th><th>Check-in</th><th>Check-out</th><th>Dias</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="h : ${cliente.hospedagens}">
+            <td th:text="'Quarto ' + ${h.quarto.numero}"></td>
+            <td th:text="${#temporals.format(h.dataCheckin,'dd/MM/yyyy')}"></td>
+            <td th:text="${h.dataCheckout != null} ? ${#temporals.format(h.dataCheckout,'dd/MM/yyyy')} : '—'"></td>
+            <td th:text="${h.quantidadeDias}"></td>
+            <td>
+              <span th:if="${h.ativa}"  class="badge-hotel badge-ativo">Ativa</span>
+              <span th:if="${!h.ativa}" class="badge-hotel badge-encerrado">Encerrada</span>
+            </td>
+            <td>
+              <a th:href="@{/hospedagens/{id}(id=${h.id})}" class="btn-outline-hotel btn-sm-hotel">
+                <i class="bi bi-eye"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(cliente.hospedagens)}">
+            <td colspan="6" style="text-align:center;color:var(--text-muted);padding:1.5rem;">
+              Sem hospedagens registradas.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

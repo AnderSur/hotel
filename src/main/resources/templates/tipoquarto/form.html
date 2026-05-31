@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Tipo de Quarto &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      <span th:text="${tipoQuarto.id == null} ? 'Novo Tipo de Quarto' : 'Editar Tipo de Quarto'"></span>
+    </div>
+    <a th:href="@{/tipos-quarto}" class="btn-outline-hotel">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header-custom"><i class="bi bi-tags"></i> Dados do Tipo</div>
+    <div class="card-body-pad">
+      <form th:action="@{/tipos-quarto/salvar}" th:object="${tipoQuarto}" method="post" class="form-hotel">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+          <label class="form-label">Nome *</label>
+          <input type="text" th:field="*{nome}" class="form-control-hotel"
+                 th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'"
+                 placeholder="Ex: Standard, Luxo, Suite"/>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descrição</label>
+          <textarea th:field="*{descricao}" class="form-control-hotel" rows="3"
+                    placeholder="Descreva as comodidades deste tipo de quarto..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preço por Dia (R$) *</label>
+          <input type="number" step="0.01" min="0" th:field="*{precoPorDia}"
+                 class="form-control-hotel"
+                 th:classappend="${#fields.hasErrors('precoPorDia')} ? 'is-invalid'"
+                 placeholder="0,00"/>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('precoPorDia')}" th:errors="*{precoPorDia}"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-accent-hotel">
+            <i class="bi bi-check-lg"></i> Salvar
+          </button>
+          <a th:href="@{/tipos-quarto}" class="btn-outline-hotel">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

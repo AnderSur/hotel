@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Cliente &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      <span th:text="${cliente.id == null} ? 'Novo Cliente' : 'Editar Cliente'">Cliente</span>
+      <small>Preencha todos os campos obrigatórios</small>
+    </div>
+    <a th:href="@{/clientes}" class="btn-outline-hotel">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header-custom">
+      <i class="bi bi-person-badge"></i> Dados do Cliente
+    </div>
+    <div class="card-body-pad">
+      <form th:action="@{/clientes/salvar}" th:object="${cliente}" method="post" class="form-hotel">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+          <label class="form-label">Nome Completo *</label>
+          <input type="text" th:field="*{nome}" class="form-control-hotel"
+                 th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" placeholder="Ex: João da Silva"/>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">CPF *</label>
+              <input type="text" th:field="*{cpf}" class="form-control-hotel"
+                     th:classappend="${#fields.hasErrors('cpf')} ? 'is-invalid'" placeholder="000.000.000-00"/>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Telefone</label>
+              <input type="text" th:field="*{telefone}" class="form-control-hotel" placeholder="(11) 99999-9999"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cidade</label>
+          <input type="text" th:field="*{cidade}" class="form-control-hotel" placeholder="Ex: São Paulo"/>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-accent-hotel">
+            <i class="bi bi-check-lg"></i> Salvar
+          </button>
+          <a th:href="@{/clientes}" class="btn-outline-hotel">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

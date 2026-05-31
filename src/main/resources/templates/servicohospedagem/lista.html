@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
+<head><title>Serviços da Hospedagem &mdash; HotelSys</title></head>
+<body>
+<section th:fragment="content">
+
+  <div class="page-header">
+    <div class="page-title">
+      Serviços — Hospedagem #<span th:text="${hospedagem.id}"></span>
+      <small th:text="${hospedagem.cliente.nome}"></small>
+    </div>
+    <div class="d-flex gap-2">
+      <a th:href="@{/hospedagens/{id}(id=${hospedagem.id})}" class="btn-outline-hotel">
+        <i class="bi bi-arrow-left"></i> Voltar à Hospedagem
+      </a>
+    </div>
+  </div>
+
+  <!-- Solicitar novo serviço -->
+  <div class="card mb-4" th:if="${hospedagem.ativa}">
+    <div class="card-header-custom"><i class="bi bi-plus-circle"></i> Solicitar Serviço</div>
+    <div class="card-body-pad">
+      <form th:action="@{/servicos-hospedagem/solicitar}" method="post">
+        <input type="hidden" name="hospedagemId" th:value="${hospedagem.id}"/>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label">Serviço *</label>
+            <select name="servicoId" class="form-control-hotel" required>
+              <option value="">— Selecione o serviço —</option>
+              <option th:each="s : ${catalogo}" th:value="${s.id}"
+                      th:text="${s.nome + ' — R$ ' + #numbers.formatDecimal(s.valor,1,'COMMA',2,'POINT')}"></option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Quantidade *</label>
+            <input type="number" name="quantidade" class="form-control-hotel" min="1" value="1" required/>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn-accent-hotel" style="width:100%;">
+              <i class="bi bi-bell"></i> Solicitar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista de serviços solicitados -->
+  <div class="card">
+    <div class="card-header-custom"><i class="bi bi-list-check"></i> Serviços Solicitados</div>
+    <div class="card-body-pad p-0">
+      <table class="table-hotel">
+        <thead>
+          <tr><th>Serviço</th><th>Descrição</th><th>Data/Hora</th><th>Qtd</th><th>Valor Unit.</th><th>Subtotal</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="s : ${servicos}">
+            <td><strong th:text="${s.servico.nome}"></strong></td>
+            <td th:text="${s.servico.descricao}"></td>
+            <td th:text="${#temporals.format(s.dataSolicitacao,'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${s.quantidade}"></td>
+            <td th:text="'R$ ' + ${#numbers.formatDecimal(s.servico.valor,1,'COMMA',2,'POINT')}"></td>
+            <td><strong th:text="'R$ ' + ${#numbers.formatDecimal(s.calcularSubtotal(),1,'COMMA',2,'POINT')}"></strong></td>
+            <td>
+              <a th:if="${hospedagem.ativa}"
+                 th:href="@{/servicos-hospedagem/deletar/{id}/{hid}(id=${s.id},hid=${hospedagem.id})}"
+                 class="btn-danger-hotel btn-sm-hotel"
+                 onclick="return confirm('Remover serviço?')">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(servicos)}">
+            <td colspan="7" style="text-align:center;color:var(--text-muted);padding:2rem;">
+              Nenhum serviço solicitado ainda.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>
