@@ -23,6 +23,7 @@ public class ServicoHospedagemController {
     private final HospedagemService hospedagemService;
     private final ServicoService servicoService;
 
+    @GetMapping("/hospedagem/{hospedagemId}")
     public String listarPorHospedagem(@PathVariable Long hospedagemId, Model model) {
         model.addAttribute("servicos", servicoHospedagemService.listarPorHospedagem(hospedagemId));
         model.addAttribute("hospedagem", hospedagemService.buscarPorId(hospedagemId));

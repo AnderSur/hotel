@@ -46,7 +46,8 @@ public class Reserva {
     @Column(name = "quantidade_dias", nullable = false)
     private Integer quantidadeDias;
 
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "data_criacao", nullable = false,
+            columnDefinition = "DATE DEFAULT (CURRENT_DATE)")
     private LocalDate dataCriacao = LocalDate.now();
 
     @NotNull(message = "Cliente é obrigatório")

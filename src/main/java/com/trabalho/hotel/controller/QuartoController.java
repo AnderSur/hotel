@@ -42,10 +42,18 @@ public class QuartoController {
                               @RequestParam(required = false) Integer quantidadeDias,
                               Model model) {
         if (dataCheckin != null && quantidadeDias != null) {
+            try{
             List<Object[]> disponiveis = quartoService.listarDisponiveisPorPeriodo(dataCheckin, quantidadeDias);
             model.addAttribute("quartos", disponiveis);
             model.addAttribute("dataCheckin", dataCheckin);
             model.addAttribute("quantidadeDias", quantidadeDias);
+            } catch (Exception e) {
+                model.addAttribute("erro", 
+                "Erro ao consultar disponibilidade. Verifique se a UDF está criada no banco. Detalhe: " 
+                + e.getMessage());
+            model.addAttribute("dataCheckin", dataCheckin);
+            model.addAttribute("quantidadeDias", quantidadeDias);
+            }
         }
         return "quarto/disponiveis";
     }

@@ -22,7 +22,6 @@ public class Hospedagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Data de check-in é obrigatória")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "data_checkin", nullable = false)
     private LocalDate dataCheckin;

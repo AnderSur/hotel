@@ -10,6 +10,11 @@
     <a th:href="@{/quartos}" class="btn-outline-hotel"><i class="bi bi-arrow-left"></i> Voltar</a>
   </div>
 
+  <div th:if="${erro}" class="alert-hotel alert-danger">
+    <i class="bi bi-exclamation-circle"></i>
+    <span th:text="${erro}"></span>
+</div>
+
   <!-- Filtro -->
   <div class="card mb-4">
     <div class="card-header-custom"><i class="bi bi-search"></i> Pesquisar Disponibilidade</div>
