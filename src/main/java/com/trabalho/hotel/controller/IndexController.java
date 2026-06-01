@@ -25,6 +25,7 @@ public class IndexController {
         model.addAttribute("totalClientes",      clienteRepository.count());
         model.addAttribute("totalQuartos",       quartoRepository.count());
         model.addAttribute("quartosDisponiveis", quartoRepository.findByDisponivelTrue().size());
+        
         model.addAttribute("totalReservas",      reservaRepository.count());
         model.addAttribute("hospedagensAtivas",  hospedagemRepository.findByAtivaTrue().size());
         model.addAttribute("hospedagens",        hospedagemRepository.findByAtivaTrue());

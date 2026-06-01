@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="fatura-servicos" pageWidth="515" pageHeight="842"
+              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+
+    <field name="nomeServico"   class="java.lang.String"/>
+    <field name="quantidade"    class="java.lang.Integer"/>
+    <field name="valorUnitario" class="java.lang.String"/>
+    <field name="subtotal"      class="java.lang.String"/>
+
+    <detail>
+        <band height="16">
+            <textField>
+                <reportElement x="0" y="0" width="250" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[" " + $F{nomeServico}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="250" y="0" width="60" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{quantidade}.toString()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="310" y="0" width="100" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $F{valorUnitario}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="410" y="0" width="105" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $F{subtotal}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <noData>
+        <band height="16">
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <text><![CDATA[Nenhum servico solicitado.]]></text>
+            </staticText>
+        </band>
+    </noData>
+
+</jasperReport>

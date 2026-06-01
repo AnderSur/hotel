@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="fatura" pageWidth="595" pageHeight="842"
+              leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40">
+
+    <!-- Parâmetros recebidos do RelatorioController -->
+    <parameter name="subReportServicos" class="net.sf.jasperreports.engine.JasperReport"/>
+    <parameter name="nomeCliente"    class="java.lang.String"/>
+    <parameter name="cpfCliente"     class="java.lang.String"/>
+    <parameter name="telefone"       class="java.lang.String"/>
+    <parameter name="cidade"         class="java.lang.String"/>
+    <parameter name="numeroQuarto"   class="java.lang.String"/>
+    <parameter name="andarQuarto"    class="java.lang.String"/>
+    <parameter name="tipoQuarto"     class="java.lang.String"/>
+    <parameter name="precoDia"       class="java.lang.String"/>
+    <parameter name="dataCheckin"    class="java.lang.String"/>
+    <parameter name="dataCheckout"   class="java.lang.String"/>
+    <parameter name="quantidadeDias" class="java.lang.String"/>
+    <parameter name="totalDiarias"   class="java.lang.String"/>
+    <parameter name="totalServicos"  class="java.lang.String"/>
+    <parameter name="totalGeral"     class="java.lang.String"/>
+    <parameter name="dataGeracao"    class="java.lang.String"/>
+    <parameter name="dsServicos"     class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+
+    <queryString><![CDATA[]]></queryString>
+
+    <title>
+        <band height="160">
+
+            <!-- Título -->
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[FATURA DE HOSPEDAGEM]]></text>
+            </staticText>
+
+            <line><reportElement x="0" y="35" width="515" height="1"/></line>
+
+            <!-- Dados do cliente -->
+            <staticText>
+                <reportElement x="0" y="45" width="515" height="14"/>
+                <textElement><font size="10" isBold="true"/></textElement>
+                <text><![CDATA[DADOS DO CLIENTE]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="0" y="62" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Nome:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="62" width="435" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{nomeCliente}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="78" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[CPF:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="78" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{cpfCliente}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="94" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Telefone:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="94" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{telefone}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="110" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Cidade:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="110" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{cidade}]]></textFieldExpression>
+            </textField>
+
+            <line><reportElement x="0" y="130" width="515" height="1"/></line>
+
+            <!-- Dados da hospedagem -->
+            <staticText>
+                <reportElement x="0" y="138" width="515" height="14"/>
+                <textElement><font size="10" isBold="true"/></textElement>
+                <text><![CDATA[DADOS DA HOSPEDAGEM]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <detail>
+        <band height="200">
+
+            <staticText>
+                <reportElement x="0" y="0" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Quarto:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="0" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{numeroQuarto}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="16" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Andar:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="16" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{andarQuarto}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="32" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Tipo:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="32" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{tipoQuarto}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="48" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Check-in:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="48" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{dataCheckin}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="64" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Check-out:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="64" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{dataCheckout}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="80" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Dias:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="80" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$P{quantidadeDias}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="96" width="80" height="14"/>
+                <textElement><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Preco/Dia:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="96" width="200" height="14"/>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $P{precoDia}]]></textFieldExpression>
+            </textField>
+
+            <line><reportElement x="0" y="116" width="515" height="1"/></line>
+
+            <!-- Cabeçalho tabela serviços -->
+            <staticText>
+                <reportElement x="0" y="122" width="515" height="14"/>
+                <textElement><font size="10" isBold="true"/></textElement>
+                <text><![CDATA[SERVICOS CONSUMIDOS]]></text>
+            </staticText>
+
+            <!-- Header da tabela -->
+            <staticText>
+                <reportElement x="0" y="138" width="250" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Left"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[ Servico]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="250" y="138" width="60" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Qtd]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="310" y="138" width="100" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Valor Unit.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="410" y="138" width="105" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Subtotal]]></text>
+            </staticText>
+
+            <!-- Subreport para listar serviços -->
+            <subreport>
+    <reportElement x="0" y="154" width="515" height="40"/>
+    <dataSourceExpression><![CDATA[$P{dsServicos}]]></dataSourceExpression>
+    <subreportExpression><![CDATA[$P{subReportServicos}]]></subreportExpression>
+</subreport>
+        </band>
+    </detail>
+
+    <summary>
+        <band height="80">
+            <line><reportElement x="0" y="0" width="515" height="1"/></line>
+
+            <!-- Totais -->
+            <staticText>
+                <reportElement x="310" y="10" width="100" height="14"/>
+                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Total Diarias:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="410" y="10" width="105" height="14"/>
+                <textElement textAlignment="Right"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $P{totalDiarias}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="310" y="26" width="100" height="14"/>
+                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Total Servicos:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="410" y="26" width="105" height="14"/>
+                <textElement textAlignment="Right"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $P{totalServicos}]]></textFieldExpression>
+            </textField>
+
+            <line><reportElement x="310" y="44" width="205" height="1"/></line>
+
+            <staticText>
+                <reportElement x="310" y="48" width="100" height="16"/>
+                <textElement textAlignment="Right"><font size="10" isBold="true"/></textElement>
+                <text><![CDATA[TOTAL GERAL:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="410" y="48" width="105" height="16"/>
+                <textElement textAlignment="Right"><font size="10" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA["R$ " + $P{totalGeral}]]></textFieldExpression>
+            </textField>
+
+            <!-- Rodapé -->
+            <staticText>
+                <reportElement x="0" y="68" width="515" height="12"/>
+                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <text><![CDATA[HotelSys - FATEC ZL]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="56" width="515" height="12"/>
+                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA["Gerado em: " + $P{dataGeracao}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>

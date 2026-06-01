@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="quartos-disponiveis" pageWidth="595" pageHeight="842"
+              leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40">
+
+    <!-- Parâmetros -->
+    <parameter name="dataFiltro"  class="java.lang.String"/>
+    <parameter name="dataGeracao" class="java.lang.String"/>
+
+    <!-- Campos do datasource -->
+    <field name="numero"    class="java.lang.String"/>
+    <field name="andar"     class="java.lang.String"/>
+    <field name="tipo"      class="java.lang.String"/>
+    <field name="descricao" class="java.lang.String"/>
+    <field name="precoDia"  class="java.lang.String"/>
+
+    <title>
+        <band height="70">
+
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="26"/>
+                <textElement textAlignment="Center">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[QUARTOS DISPONIVEIS]]></text>
+            </staticText>
+
+            <textField>
+                <reportElement x="0" y="28" width="515" height="14"/>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA["Data: " + $P{dataFiltro}]]></textFieldExpression>
+            </textField>
+
+            <line><reportElement x="0" y="46" width="515" height="1"/></line>
+
+            <!-- Cabeçalho da tabela -->
+            <staticText>
+                <reportElement x="0" y="50" width="60" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Quarto]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="60" y="50" width="60" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Andar]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="120" y="50" width="110" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Tipo]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="230" y="50" width="185" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Descricao]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="415" y="50" width="100" height="16" backcolor="#CCCCCC"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[Preco/Dia]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <detail>
+        <band height="16">
+            <textField>
+                <reportElement x="0" y="0" width="60" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="60" y="0" width="60" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{andar}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="120" y="0" width="110" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="230" y="0" width="185" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[" " + $F{descricao}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="415" y="0" width="100" height="16"/>
+                <box><pen lineWidth="0.5"/></box>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{precoDia}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <noData>
+        <band height="30">
+            <staticText>
+                <reportElement x="0" y="0" width="515" height="20"/>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <text><![CDATA[Nenhum quarto disponivel para esta data.]]></text>
+            </staticText>
+        </band>
+    </noData>
+
+    <summary>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="4" width="515" height="12"/>
+                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA["Gerado em: " + $P{dataGeracao} + "  |  HotelSys - FATEC ZL"]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>

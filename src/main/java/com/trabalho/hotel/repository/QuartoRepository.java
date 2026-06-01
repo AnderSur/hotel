@@ -12,12 +12,15 @@ import java.util.List;
 @Repository
 public interface QuartoRepository extends JpaRepository<Quarto, Long> {
 
-    @Query(value = "SELECT * FROM fn_quartos_disponiveis(:dataCheckin, :quantidadeDias)", nativeQuery = true)
-    List<Object[]> findQuartosDisponiveisPorPeriodo(
-        @Param("dataCheckin") LocalDate dataCheckin,
-        @Param("quantidadeDias") Integer quantidadeDias);
-
     List<Quarto> findByDisponivelTrue();
+
+    @Query(value = "SELECT  f.id_quarto, f.numero,  f.andar, " +
+            "tq.descricao, tq.nome, tq.preco_por_dia " +
+            "FROM fn_quartos_disponiveis(:dataCheckin, :quantidadeDias) f, tipo_quarto tq, quarto q " +
+            "WHERE q.id = f.id_quarto AND tq.id = q.tipo_quarto_id", nativeQuery = true)
+    List<Object[]> findQuartosDisponiveisPorPeriodo(
+    @Param("dataCheckin") LocalDate dataCheckin,
+    @Param("quantidadeDias") Integer quantidadeDias);
 
     boolean existsByNumero(Integer numero);
 }

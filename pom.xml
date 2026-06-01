@@ -35,6 +35,28 @@
     		<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
+    		<groupId>net.sf.jasperreports</groupId>
+    		<artifactId>jasperreports</artifactId>
+    		<version>6.21.0</version>
+			<exclusions>
+        <!-- Remove javax.servlet que conflita com jakarta.servlet do Spring Boot 4 -->
+        <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </exclusion>
+        <!-- Remove o ecj antigo que pode conflitar com o compilador -->
+        <exclusion>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>ecj</artifactId>
+        </exclusion>
+    </exclusions>
+		</dependency>
+		<dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <scope>provided</scope>
+</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>

@@ -1,48 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/base :: layout(~{::title}, ~{::section})}">
-<head><title>Dashboard &mdash; HotelSys</title></head>
+<head><title>Dashboard &mdash; Hotel</title></head>
 <body>
 <section th:fragment="content">
 
   <div class="page-header">
     <div class="page-title">
-      Dashboard
-      <small>Bem-vindo ao sistema de gestão do hotel</small>
+      Sistema de Gestão do Hotel
     </div>
     <span style="color:var(--text-muted);font-size:.85rem;">
       <i class="bi bi-clock"></i>
       <span th:text="${#temporals.format(#temporals.createNow(),'dd/MM/yyyy')}"></span>
     </span>
-  </div>
-
-  <!-- Stats -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">👥</div>
-      <div class="stat-value" th:text="${totalClientes}">0</div>
-      <div class="stat-label">Clientes</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">🛏️</div>
-      <div class="stat-value" th:text="${totalQuartos}">0</div>
-      <div class="stat-label">Quartos</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">✅</div>
-      <div class="stat-value" th:text="${quartosDisponiveis}">0</div>
-      <div class="stat-label">Disponíveis</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📅</div>
-      <div class="stat-value" th:text="${totalReservas}">0</div>
-      <div class="stat-label">Reservas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">🏨</div>
-      <div class="stat-value" th:text="${hospedagensAtivas}">0</div>
-      <div class="stat-label">Hospedagens Ativas</div>
-    </div>
   </div>
 
   <!-- Quick actions -->
