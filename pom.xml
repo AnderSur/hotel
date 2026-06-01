@@ -11,14 +11,35 @@
 	<groupId>com.trabalho</groupId>
 	<artifactId>hotel</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
+	<name>Hotel Reservas System</name>
+	<description>
+    Sistema de gerenciamento hoteleiro com reservas, check-in, 
+    serviços e geração de relatórios. Desenvolvido com Spring Boot, 
+    Spring Web e Spring Data JPA.
+	</description>
+	<url>https://github.com/AnderSur/hotel.git</url>
 	<licenses>
 		<license/>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+        <id>kleberAnderson</id>
+        <name>Anderson</name>
+        <email>a.velasco.kleber@gmail.com</email>
+		<roles>
+            <role>Developer</role>
+        </roles>
+		<organization>FATEC ZL</organization>
+		</developer>
+		<developer>
+        <id>PedroNakao</id>
+        <name>Pedro</name>
+        <email>nakpedro7@gmail.com</email>
+			<roles>
+            <role>Developer</role>
+        </roles>
+        <organization>FATEC ZL</organization>
+    	</developer>
 	</developers>
 	<scm>
 		<connection/>
@@ -33,23 +54,6 @@
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-    		<groupId>net.sf.jasperreports</groupId>
-    		<artifactId>jasperreports</artifactId>
-    		<version>6.21.0</version>
-			<exclusions>
-        <!-- Remove javax.servlet que conflita com jakarta.servlet do Spring Boot 4 -->
-        <exclusion>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </exclusion>
-        <!-- Remove o ecj antigo que pode conflitar com o compilador -->
-        <exclusion>
-            <groupId>org.eclipse.jdt</groupId>
-            <artifactId>ecj</artifactId>
-        </exclusion>
-    </exclusions>
 		</dependency>
 		<dependency>
     <groupId>jakarta.servlet</groupId>
@@ -89,6 +93,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.21.5</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-pdf</artifactId>
+			<version>7.0.5</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -141,6 +157,16 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-site-plugin</artifactId>
+    			<version>3.12.1</version>
+			</plugin>
+			<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-project-info-reports-plugin</artifactId>
+    			<version>3.4.5</version>
 			</plugin>
 		</plugins>
 	</build>
